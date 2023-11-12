@@ -186,3 +186,9 @@ If you're running a local Seq instance, you can now view the structured properti
 ## Getting help and advice
 
 Ask your question on [Stack Overflow](https://stackoverflow.com) and tag it with `serilog`.
+
+## also worth reading
+- [Example](https://ehye.github.io/2023/02/14/asp-dotnet-core-api-serilog/)
+- [Medium](https://medium.com/@luisalexandre.rodrigues/logging-http-request-and-response-in-net-web-api-268135dcb27b)
+- [Reduce verbosity](https://andrewlock.net/using-serilog-aspnetcore-in-asp-net-core-3-reducing-log-verbosity/)
+- [palador](https://www.palador.com/2017/05/24/logging-the-body-of-http-request-and-response-in-asp-net-core/)

@@ -27,7 +27,8 @@ try
     app.UseSerilogRequestLogging(options =>
     {
         // Customize the message template
-        options.MessageTemplate = "HTTP {RequestScheme}://{RequestHost}{RequestPath}?{QueryString} - {uid} - {@RequestBody} - {@ResponseBody}";
+        // options.MessageTemplate = "HTTP {RequestScheme}://{RequestHost}{RequestPath}?{QueryString} - {uid} - {@RequestBody} - {@ResponseBody}";
+        // options.MessageTemplate = "HTTP {RequestMethod} {RequestScheme}://{RequestHost}{RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
 
         // // Emit debug-level events instead of the defaults
         // options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Debug;
@@ -35,12 +36,18 @@ try
         // Attach additional properties to the request completion event
         options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
         {
+            diagnosticContext.Set("RequestMethod", httpContext.Request.Method);
             diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
             diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
             diagnosticContext.Set("QueryString", httpContext.Request.QueryString);
             // diagnosticContext.Set("RequestBody", await new StreamReader(httpContext.Request.Body).ReadToEndAsync());
             diagnosticContext.Set("CorrelationId", httpContext.Request.Headers.TryGetValue("X-Correlation-Id", out var correlationId) ? correlationId : Guid.NewGuid());
             // diagnosticContext.Set("ResponseBody", await new StreamReader(httpContext.Response.Body).ReadToEndAsync());
+
+            var obj = new { Id = Guid.NewGuid(), Text = "{\"body\": false}", };
+            diagnosticContext.Set("RequestBody", obj);
+            diagnosticContext.Set("RequestBody", obj);
+            diagnosticContext.Set("ResponseBody", obj);
 
             // // getting the body seems to be quite difficult... also need to obfuscate private data and eliminate long binary data (e.g. documents)
             // Reset the request body stream position to the start so we can read it
